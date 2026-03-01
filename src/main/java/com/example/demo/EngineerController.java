@@ -1,9 +1,6 @@
 package com.example.demo;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +28,27 @@ public class EngineerController {
                 myStatus.getTargetSkill()
         );
         return repository.save(upgradedStatus);
+    }
+
+    @PutMapping("/api/engineers/{id}")
+    public EngineerStatus updateEngineer(@PathVariable Long id, @RequestBody EngineerStatus updateData) {
+        EngineerStatus existingEngineer = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("指定されたIDのエンジニアが見つかりません"));
+
+        EngineerStatus newData = new EngineerStatus(
+                updateData.getName(),
+                updateData.getAge(),
+                updateData.getCurrentSalary(),
+                updateData.getTargetSalary(),
+                updateData.getTargetSkill()
+        );
+        newData.setId(id);
+        return  repository.save(newData);
+    }
+
+    @DeleteMapping("/api/engineers/{id}")
+    public String deleteEngineer(@PathVariable Long id) {
+        repository.deleteById(id);
+        return "ID: " + id + "のエンジニアデータをデータベースから完全に消去しました。";
     }
 }

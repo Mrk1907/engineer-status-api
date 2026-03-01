@@ -29,6 +29,10 @@ public class EngineerStatus {
         this.targetSkill = targetSkill;
     }
 
+    public void setId(Long id){
+        this.id = id;
+    }
+
     public Long getId() { return id; }
     public String getName() { return name; }
     public int getAge() { return age; }
